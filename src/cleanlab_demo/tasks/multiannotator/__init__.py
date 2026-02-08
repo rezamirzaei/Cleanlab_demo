@@ -2,6 +2,7 @@ from cleanlab_demo.tasks.multiannotator.provider import MultiannotatorDataProvid
 from cleanlab_demo.tasks.multiannotator.schemas import MultiannotatorConfig, MultiannotatorResult
 from cleanlab_demo.tasks.multiannotator.task import MultiannotatorTask, run_multiannotator
 
+
 __all__ = [
     "MultiannotatorConfig",
     "MultiannotatorDataProvider",

@@ -12,6 +12,7 @@ A comprehensive ML project demonstrating [Cleanlab](https://github.com/cleanlab/
 - 🎛️ **Streamlit UI**: End-to-end tabular runner + dedicated task pages
 - 📓 **Jupyter Notebooks**: Step-by-step tutorials
 - 🤖 **AI Reports**: Optional LLM-powered analysis reports (via pydantic-ai)
+- ✅ **Production Quality**: CI/CD, pre-commit hooks, comprehensive testing, type safety
 
 ## Quickstart (Docker)
 
@@ -145,31 +146,85 @@ Additional notebooks:
 cleanlab_demo/
 ├── src/cleanlab_demo/
 │   ├── ai/          # AI report generation
+│   ├── core/        # Core utilities (exceptions, types, constants)
 │   ├── data/        # Dataset loading and schemas
 │   ├── tasks/       # Dedicated task implementations (multi-label, token, vision, etc.)
 │   ├── experiments/ # Experiment runner and sweeps
 │   ├── features/    # Feature preprocessing
 │   ├── models/      # Model factory
 │   ├── ui/          # Streamlit app
-│   └── utils/       # Download and filesystem utilities
+│   └── utils/       # Download, filesystem, and ML utilities
 ├── notebooks/       # Jupyter tutorials
 ├── tests/           # Test suite
+├── .github/         # CI/CD workflows
 └── docker-compose.yml
+```
+
+## Code Quality
+
+This project follows production best practices:
+
+- **Type Safety**: Full type hints with mypy strict mode
+- **Testing**: pytest with 70%+ coverage requirement
+- **Linting**: ruff for fast, comprehensive linting
+- **Security**: bandit security scanning
+- **CI/CD**: GitHub Actions for automated testing and deployment
+- **Pre-commit**: Automated code quality checks
+
+### Pre-commit Setup
+
+```bash
+# Install pre-commit hooks
+pip install pre-commit
+pre-commit install
+pre-commit install --hook-type commit-msg
+
+# Run all hooks manually
+pre-commit run --all-files
+```
+
+### Commit Message Convention
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting, etc.)
+- `refactor:` - Code refactoring
+- `test:` - Adding or updating tests
+- `chore:` - Maintenance tasks
+
+### Running Quality Checks
+
+```bash
+# Linting
+ruff check src/ tests/
+ruff format src/ tests/
+
+# Type checking
+mypy src/cleanlab_demo
+
+# Security scan
+bandit -r src/cleanlab_demo -ll
+
+# Tests with coverage
+pytest --cov=cleanlab_demo --cov-report=term-missing --cov-fail-under=70
 ```
 
 ## Mathematical Background (high-level)
 
-Cleanlab is model-agnostic: it only needs your dataset’s labels and *out-of-sample* model predictions (e.g., via cross-validation).
+Cleanlab is model-agnostic: it only needs your dataset's labels and *out-of-sample* model predictions (e.g., via cross-validation).
 
 **Classification (confident learning)**
 
-- Let noisy labels be `\tilde{y}` and unknown true labels be `y*`.
-- Train a probabilistic classifier that outputs `\hat{p}(y=k|x)` and obtain **out-of-sample** predicted probabilities for each training example.
+- Let noisy labels be `ỹ` and unknown true labels be `y*`.
+- Train a probabilistic classifier that outputs `p̂(y=k|x)` and obtain **out-of-sample** predicted probabilities for each training example.
 - A common label-quality score is **self-confidence**:
-  - `s_i = \hat{p}(\tilde{y}_i | x_i)` (lower means the given label looks less plausible under the model).
-- Confident learning estimates the (noisy label, true label) joint distribution via a **confident joint** `\hat{C}`:
+  - `sᵢ = p̂(ỹᵢ | xᵢ)` (lower means the given label looks less plausible under the model).
+- Confident learning estimates the (noisy label, true label) joint distribution via a **confident joint** `Ĉ`:
   - Intuition: count examples whose predicted class is confidently `j` (above a class-dependent threshold) while their given label is `i`.
-  - From `\hat{C}`, estimate noise rates like `P(\tilde{y}=i | y*=j)` and prune/rank likely label issues.
+  - From `Ĉ`, estimate noise rates like `P(ỹ=i | y*=j)` and prune/rank likely label issues.
 
 **Multi-label**
 
@@ -183,7 +238,7 @@ Cleanlab is model-agnostic: it only needs your dataset’s labels and *out-of-sa
 
 **Regression**
 
-- Cleanlab’s regression `CleanLearning` identifies label issues using residuals (difference between observed label and model prediction) together with uncertainty estimates (via CV + bootstrapping).
+- Cleanlab's regression `CleanLearning` identifies label issues using residuals (difference between observed label and model prediction) together with uncertainty estimates (via CV + bootstrapping).
 - Intuition: labels that are extreme outliers relative to model predictions/uncertainty are more likely incorrect.
 
 **Datalab (outliers, near-duplicates, non-iid)**
@@ -194,11 +249,11 @@ Cleanlab is model-agnostic: it only needs your dataset’s labels and *out-of-sa
 **Object detection**
 
 - Uses model-predicted boxes + confidences and overlaps (IoU) with annotated boxes.
-- Flags images where boxes look swapped (wrong class), poorly located, or overlooked (missing) given the model’s confident predictions.
+- Flags images where boxes look swapped (wrong class), poorly located, or overlooked (missing) given the model's confident predictions.
 
 **Segmentation**
 
-- Uses per-pixel predicted probabilities `\hat{p}(y=k|x_pixel)` and integer masks `(H,W)`.
+- Uses per-pixel predicted probabilities `p̂(y=k|xₚᵢₓₑₗ)` and integer masks `(H,W)`.
 - Finds pixels likely mislabeled and aggregates per-image scores (e.g., soft-min over pixel label quality).
 
 **Multi-annotator + active learning**

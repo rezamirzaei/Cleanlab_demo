@@ -8,6 +8,7 @@ from cleanlab_demo.tasks.multilabel.task import (
     run_multilabel_classification,
 )
 
+
 __all__ = [
     "MultilabelClassificationConfig",
     "MultilabelClassificationResult",

@@ -32,6 +32,7 @@ from cleanlab_demo.data.providers.vision import (
     PennFudanPedProvider,
 )
 
+
 __all__ = [
     "BikeSharingDataProvider",
     "CaliforniaHousingDataProvider",

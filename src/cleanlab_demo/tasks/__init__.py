@@ -37,6 +37,7 @@ from cleanlab_demo.tasks.vision import (
     VisionDetectionSegmentationTask,
 )
 
+
 __all__ = [
     "DemoConfig",
     "DemoResult",

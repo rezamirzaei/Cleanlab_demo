@@ -8,6 +8,7 @@ from cleanlab_demo.tasks.multiclass.task import (
     run_multiclass_classification,
 )
 
+
 __all__ = [
     "MulticlassClassificationConfig",
     "MulticlassClassificationResult",

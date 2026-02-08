@@ -39,7 +39,7 @@ class LabelCodec:
         return cls(encoder=enc)
 
     def encode(self, y: pd.Series) -> np.ndarray:
-        return cast(np.ndarray, self.encoder.transform(y.to_numpy()))
+        return cast("np.ndarray", self.encoder.transform(y.to_numpy()))
 
     def decode_one(self, label_int: int) -> str | int:
         value = self.encoder.inverse_transform([label_int])[0]
@@ -93,7 +93,7 @@ def _compute_pred_probs_cv(
     pred_probs = cross_val_predict(
         pipeline, X_train, y_train, cv=cv, method="predict_proba", n_jobs=1
     )
-    return cast(np.ndarray, pred_probs)
+    return cast("np.ndarray", pred_probs)
 
 
 def _find_label_issues(
@@ -147,14 +147,14 @@ def _compute_datalab_features(
 
         if n_features <= 50:
             if issparse(X_vec):
-                return cast(np.ndarray, X_vec.toarray()), None
-            return cast(np.ndarray, np.asarray(X_vec)), None
+                return cast("np.ndarray", X_vec.toarray()), None
+            return cast("np.ndarray", np.asarray(X_vec)), None
 
         n_components = min(50, max(2, n_features - 1))
         features = TruncatedSVD(n_components=n_components, random_state=random_state).fit_transform(
             X_vec
         )
-        return cast(np.ndarray, features), None
+        return cast("np.ndarray", features), None
     except Exception as e:
         return None, f"{type(e).__name__}: {e}"
 
@@ -284,8 +284,8 @@ def _try_cleanlearning_metrics(
 
         cleanlearner = CleanLearning(**kwargs)
         cleanlearner.fit(X_train, y_train)
-        y_pred = cast(np.ndarray, cleanlearner.predict(X_test))
-        y_proba = cast(np.ndarray, cleanlearner.predict_proba(X_test))
+        y_pred = cast("np.ndarray", cleanlearner.predict(X_test))
+        y_proba = cast("np.ndarray", cleanlearner.predict_proba(X_test))
         metrics = classification_metrics(y_test, y_pred, y_proba)
         return metrics, None
     except ImportError as e:
@@ -345,7 +345,7 @@ class ExperimentRunner:
 
         if config.task == TaskType.classification:
             y_train = _inject_label_noise(
-                cast(np.ndarray, y_train),
+                cast("np.ndarray", y_train),
                 frac=config.demo.label_noise_fraction,
                 random_state=config.demo.noise_random_state,
             )
@@ -353,7 +353,7 @@ class ExperimentRunner:
         preprocessor = build_preprocessor(X_train, config.features)
         estimator = create_estimator(
             config.task,
-            cast(Any, config.model),
+            cast("Any", config.model),
             random_state=config.split.random_state,
         )
         pipeline = Pipeline([("preprocess", preprocessor), ("model", estimator)])
@@ -369,16 +369,16 @@ class ExperimentRunner:
                 pred_probs_cv = _compute_pred_probs_cv(
                     pipeline,
                     X_train,
-                    cast(np.ndarray, y_train),
+                    cast("np.ndarray", y_train),
                     task=config.task,
                     cv_folds=config.cleanlab.cv_folds,
                     random_state=config.split.random_state,
                 )
 
                 label_issues = _find_label_issues(
-                    cast(np.ndarray, y_train),
+                    cast("np.ndarray", y_train),
                     pred_probs_cv,
-                    cast(LabelCodec, label_codec),
+                    cast("LabelCodec", label_codec),
                     max_issues=config.cleanlab.max_issues,
                     score_threshold=config.cleanlab.issue_score_threshold,
                 )
@@ -391,12 +391,12 @@ class ExperimentRunner:
         pipeline.fit(X_train, y_train)
 
         if config.task == TaskType.classification:
-            y_pred = cast(np.ndarray, pipeline.predict(X_test))
-            y_proba = cast(np.ndarray, pipeline.predict_proba(X_test))
-            metrics = classification_metrics(cast(np.ndarray, y_test), y_pred, y_proba)
+            y_pred = cast("np.ndarray", pipeline.predict(X_test))
+            y_proba = cast("np.ndarray", pipeline.predict_proba(X_test))
+            metrics = classification_metrics(cast("np.ndarray", y_test), y_pred, y_proba)
         else:
-            y_pred = cast(np.ndarray, pipeline.predict(X_test))
-            metrics = regression_metrics(cast(np.ndarray, y_test), y_pred)
+            y_pred = cast("np.ndarray", pipeline.predict(X_test))
+            metrics = regression_metrics(cast("np.ndarray", y_test), y_pred)
 
         variants.append(
             VariantResult(
@@ -414,7 +414,7 @@ class ExperimentRunner:
                 cleanlab_summary["datalab_features_error"] = features_err
 
             df_train_with_labels = X_train.copy()
-            df_train_with_labels[target_col] = cast(np.ndarray, y_train)
+            df_train_with_labels[target_col] = cast("np.ndarray", y_train)
             datalab_payload, datalab_issues = _run_datalab(
                 df_train_with_labels,
                 X_train,
@@ -450,7 +450,7 @@ class ExperimentRunner:
                         label_issues.append(
                             LabelIssue(
                                 index=idx,
-                                label=float(cast(np.ndarray, y_train)[idx]),
+                                label=float(cast("np.ndarray", y_train)[idx]),
                                 suggested_label=float(r.get("predicted_label"))
                                 if "predicted_label" in r
                                 else None,
@@ -499,20 +499,20 @@ class ExperimentRunner:
                     keep_mask = np.ones(len(X_train), dtype=bool)
                     keep_mask[prune_indices] = False
                     X_train_pruned = X_train.iloc[keep_mask]
-                    y_train_pruned = cast(np.ndarray, y_train)[keep_mask]
+                    y_train_pruned = cast("np.ndarray", y_train)[keep_mask]
 
                     pruned_pipeline = clone(pipeline)
                     pruned_pipeline.fit(X_train_pruned, y_train_pruned)
 
                     if config.task == TaskType.classification:
-                        y_pred2 = cast(np.ndarray, pruned_pipeline.predict(X_test))
-                        y_proba2 = cast(np.ndarray, pruned_pipeline.predict_proba(X_test))
+                        y_pred2 = cast("np.ndarray", pruned_pipeline.predict(X_test))
+                        y_proba2 = cast("np.ndarray", pruned_pipeline.predict_proba(X_test))
                         pruned_metrics = classification_metrics(
-                            cast(np.ndarray, y_test), y_pred2, y_proba2
+                            cast("np.ndarray", y_test), y_pred2, y_proba2
                         )
                     else:
-                        y_pred2 = cast(np.ndarray, pruned_pipeline.predict(X_test))
-                        pruned_metrics = regression_metrics(cast(np.ndarray, y_test), y_pred2)
+                        y_pred2 = cast("np.ndarray", pruned_pipeline.predict(X_test))
+                        pruned_metrics = regression_metrics(cast("np.ndarray", y_test), y_pred2)
 
                     variants.append(
                         VariantResult(
@@ -531,9 +531,9 @@ class ExperimentRunner:
             cl_metrics, cl_error = _try_cleanlearning_metrics(
                 pipeline,
                 X_train,
-                cast(np.ndarray, y_train),
+                cast("np.ndarray", y_train),
                 X_test,
-                cast(np.ndarray, y_test),
+                cast("np.ndarray", y_test),
                 cv_folds=config.cleanlab.cv_folds,
             )
             if cl_error:
@@ -550,8 +550,8 @@ class ExperimentRunner:
 
         return RunResult(
             dataset=config.dataset,
-            task=cast(TaskType, config.task),
-            model=cast(Any, config.model).name,
+            task=cast("TaskType", config.task),
+            model=cast("Any", config.model).name,
             n_train=len(X_train),
             n_test=len(X_test),
             metrics=metrics,

@@ -8,6 +8,22 @@ version = "0.1.0"
 description = "Cleanlab end-to-end demo with real-world data, Pydantic-validated configs, and a small UI."
 readme = "README.md"
 requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Cleanlab Demo Team"}
+]
+keywords = ["cleanlab", "machine-learning", "data-quality", "label-errors"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
 dependencies = [
   "cleanlab[datalab]>=2.6.0",
   "ipykernel>=7.2.0",
@@ -29,10 +45,14 @@ dependencies = [
 ai = ["pydantic-ai>=0.0.24"]
 dev = [
   "mypy>=1.8.0",
+  "pre-commit>=3.6.0",
   "pytest>=8.0.0",
   "pytest-cov>=4.1.0",
+  "pytest-xdist>=3.5.0",
   "ruff>=0.4.0",
   "types-requests>=2.31.0.20240218",
+  "safety>=2.3.0",
+  "bandit>=1.7.0",
 ]
 notebooks = [
   "ipykernel>=6.29.0",
@@ -41,7 +61,13 @@ notebooks = [
   "seaborn>=0.13.0",
 ]
 ui = ["plotly>=5.19.0", "streamlit>=1.32.0"]
+all = ["cleanlab-demo[ai,dev,notebooks,ui]"]
 
+[project.urls]
+Homepage = "https://github.com/your-org/cleanlab-demo"
+Documentation = "https://github.com/your-org/cleanlab-demo#readme"
+Repository = "https://github.com/your-org/cleanlab-demo"
+Issues = "https://github.com/your-org/cleanlab-demo/issues"
 
 [project.scripts]
 cleanlab-demo = "cleanlab_demo.cli:app"
@@ -52,25 +78,134 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# =============================================================================
+# Testing
+# =============================================================================
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests requiring external resources",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["cleanlab_demo"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+fail_under = 70
+show_missing = true
+
+# =============================================================================
+# Linting & Formatting
+# =============================================================================
 
 [tool.ruff]
 line-length = 100
+target-version = "py311"
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+]
 
 [tool.ruff.lint]
 select = [
-    "E",    # pycodestyle errors
-    "F",    # pyflakes
-    "I",    # isort
-    "W",    # pycodestyle warnings
-    "UP",   # pyupgrade
-    "B",    # flake8-bugbear
-    "SIM",  # flake8-simplify
-    "RUF",  # ruff-specific rules
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "I",      # isort
+    "W",      # pycodestyle warnings
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "SIM",    # flake8-simplify
+    "RUF",    # ruff-specific rules
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez
+    "T10",    # flake8-debugger
+    "ISC",    # flake8-implicit-str-concat
+    "PIE",    # flake8-pie
+    "PT",     # flake8-pytest-style
+    "RSE",    # flake8-raise
+    "RET",    # flake8-return
+    "TCH",    # flake8-type-checking
+    "ARG",    # flake8-unused-arguments
+    "PLC",    # pylint convention
+    "PLE",    # pylint error
+    "PLW",    # pylint warning
 ]
 ignore = [
     "E501",   # line length (handled by formatter)
     "B008",   # function-call-in-default-argument (required by Typer)
     "UP042",  # replace-str-enum (StrEnum migration deferred)
+    "PLW0603", # global statement
+    "ARG001", # unused function argument (common in protocols)
+    "ARG002", # unused method argument
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG", "PLR2004", "S101"]
+"notebooks/*" = ["E402", "T201"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["cleanlab_demo"]
+force-single-line = false
+lines-after-imports = 2
+
+# =============================================================================
+# Type Checking
+# =============================================================================
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+namespace_packages = true
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = [
+    "sklearn.*",
+    "cleanlab.*",
+    "torch.*",
+    "torchvision.*",
+    "PIL.*",
+    "streamlit.*",
+    "plotly.*",
+    "pydantic_ai.*",
+]
+ignore_missing_imports = true
+

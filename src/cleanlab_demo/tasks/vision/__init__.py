@@ -8,6 +8,7 @@ from cleanlab_demo.tasks.vision.task import (
     run_vision_detection_segmentation,
 )
 
+
 __all__ = [
     "VisionDataProvider",
     "VisionDetectionSegmentationConfig",

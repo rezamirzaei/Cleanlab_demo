@@ -79,7 +79,7 @@ class PennFudanPedProvider(VisionDataProvider):
     ) -> tuple[list[Any], list[np.ndarray], list[np.ndarray], list[tuple[int, int]]]:
         """Load PennFudanPed images and ground truth."""
         try:
-            import torchvision  # noqa: F401
+            import torchvision
             from PIL import Image
         except ImportError as e:
             raise RuntimeError(

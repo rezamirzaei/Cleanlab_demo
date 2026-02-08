@@ -21,6 +21,7 @@ from cleanlab_demo.config import (
 from cleanlab_demo.experiments import run_experiment
 from cleanlab_demo.settings import settings
 
+
 _MIN_MAX_ROWS = 100
 
 

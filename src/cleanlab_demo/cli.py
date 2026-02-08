@@ -26,6 +26,7 @@ from cleanlab_demo.experiments import run_sweep
 from cleanlab_demo.experiments.runner import run_experiment
 from cleanlab_demo.settings import logger, settings
 
+
 app = typer.Typer(
     add_completion=False,
     no_args_is_help=True,
@@ -48,7 +49,6 @@ def main_callback(
     ),
 ) -> None:
     """Cleanlab Demo CLI."""
-    pass
 
 
 @app.command()

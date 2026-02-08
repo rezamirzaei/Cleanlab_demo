@@ -4,6 +4,7 @@ from typing import Any
 
 import numpy as np
 
+
 _VISION_DEPS_HELP = 'Install with: `pip install -e .` (or `uv sync`).'
 
 

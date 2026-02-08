@@ -17,6 +17,7 @@ from cleanlab_demo.settings import settings
 from cleanlab_demo.tasks.multiannotator.provider import MultiannotatorDataProvider
 from cleanlab_demo.utils.download import download_file
 
+
 _MOVIELENS_100K_URL = "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
 _ITEM_COLS = [
     "movie_id",

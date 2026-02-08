@@ -8,6 +8,7 @@ from cleanlab_demo.tasks.regression.task import (
     run_regression_cleanlearning,
 )
 
+
 __all__ = [
     "RegressionCleanLearningConfig",
     "RegressionCleanLearningResult",

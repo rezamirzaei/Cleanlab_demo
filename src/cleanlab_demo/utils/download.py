@@ -9,13 +9,13 @@ import requests
 from cleanlab_demo.settings import logger
 from cleanlab_demo.utils.fs import ensure_dir
 
+
 _ALLOWED_SCHEMES = {"http", "https"}
 
 
 class DownloadError(Exception):
     """Error during file download."""
 
-    pass
 
 
 def download_file(
