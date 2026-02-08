@@ -3,14 +3,14 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cleanlab-demo"
+name = "cleanlab-forge"
 version = "0.1.0"
 description = "Cleanlab end-to-end demo with real-world data, Pydantic-validated configs, and a small UI."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "Cleanlab Demo Team"}
+    {name = "Reza Mirzaeifard"}
 ]
 keywords = ["cleanlab", "machine-learning", "data-quality", "label-errors"]
 classifiers = [
