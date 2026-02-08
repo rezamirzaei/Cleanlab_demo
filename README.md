@@ -20,7 +20,14 @@ A comprehensive ML project demonstrating [Cleanlab](https://github.com/cleanlab/
 - [Architecture](#architecture)
 - [Configuration](#configuration)
 - [AI Report](#ai-report-optional)
-- [Code Quality](#code-quality)
+- [Repo Hygiene](#repo-hygiene)
+  - [Quality Standards](#quality-standards)
+  - [Pre-commit Hooks](#pre-commit-hooks)
+  - [Commit Message Convention](#commit-message-convention)
+  - [CI/CD Pipeline](#cicd-pipeline)
+  - [Running Quality Checks](#running-quality-checks-locally)
+  - [Dependency Management](#dependency-management)
+  - [Release Checklist](#release-checklist)
 - [Development](#development)
 - [License](#license)
 
@@ -1238,46 +1245,186 @@ cleanlab-demo ai-report --no-ai
 
 Or use the notebook: `notebooks/03_pydantic_ai_report.ipynb`
 
-## Code Quality
+## Repo Hygiene
 
-This project follows production best practices:
+This project follows production-grade best practices for code quality, security, and maintainability.
 
-- **Type Safety**: Full type hints with mypy strict mode
-- **Testing**: pytest with 70%+ coverage requirement
-- **Linting**: ruff for fast, comprehensive linting
-- **Security**: bandit security scanning
-- **CI/CD**: GitHub Actions for automated testing and deployment
-- **Pre-commit**: Automated code quality checks
+### Badges
 
-### Pre-commit Setup
+```markdown
+[![CI](https://github.com/your-org/cleanlab-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/cleanlab-demo/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/your-org/cleanlab-demo/branch/main/graph/badge.svg)](https://codecov.io/gh/your-org/cleanlab-demo)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Code style: ruff-format](https://img.shields.io/badge/code%20style-ruff--format-000000.svg)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+```
+
+### Quality Standards
+
+| Tool | Purpose | Threshold |
+|------|---------|-----------|
+| **pytest** | Unit & integration testing | 70% coverage minimum |
+| **ruff** | Linting (replaces flake8, isort, pyupgrade, etc.) | Zero violations |
+| **ruff format** | Code formatting (replaces black) | Auto-enforced |
+| **mypy** | Static type checking | Strict mode, no errors |
+| **bandit** | Security vulnerability scanning | No high/medium issues |
+| **pre-commit** | Git hooks for automated checks | All hooks pass |
+
+### Project Structure Best Practices
+
+```
+cleanlab_demo/
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # CI/CD pipeline
+├── .pre-commit-config.yaml     # Pre-commit hook configuration
+├── .gitignore                  # Git ignore patterns
+├── .dockerignore               # Docker ignore patterns
+├── .env.example                # Environment variable template
+├── pyproject.toml              # Single source of truth for config
+├── README.md                   # Project documentation
+├── LICENSE                     # MIT license
+├── Dockerfile                  # Container definition
+├── docker-compose.yml          # Multi-container orchestration
+├── src/
+│   └── cleanlab_demo/          # Source code (src layout)
+│       ├── __init__.py         # Package version
+│       ├── py.typed            # PEP 561 marker (typed package)
+│       └── ...
+├── tests/
+│   ├── conftest.py             # Shared fixtures
+│   └── test_*.py               # Test modules
+├── notebooks/                  # Jupyter notebooks
+├── data/                       # Data directory (git-ignored)
+└── artifacts/                  # Output artifacts (git-ignored)
+```
+
+### Pre-commit Hooks
+
+The project uses [pre-commit](https://pre-commit.com/) to enforce quality on every commit:
+
+```yaml
+# .pre-commit-config.yaml includes:
+repos:
+  - ruff (lint + format)           # Fast Python linter
+  - pre-commit-hooks               # File hygiene (trailing whitespace, etc.)
+  - mypy                           # Type checking
+  - bandit                         # Security scanning
+  - conventional-pre-commit        # Commit message format
+```
+
+**Setup:**
 
 ```bash
-# Install pre-commit hooks
+# Install pre-commit
 pip install pre-commit
+
+# Install hooks (run once after cloning)
 pre-commit install
 pre-commit install --hook-type commit-msg
 
 # Run all hooks manually
 pre-commit run --all-files
+
+# Update hooks to latest versions
+pre-commit autoupdate
 ```
 
 ### Commit Message Convention
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/):
+This project enforces [Conventional Commits](https://www.conventionalcommits.org/) via pre-commit hooks:
 
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `style:` - Code style changes (formatting, etc.)
-- `refactor:` - Code refactoring
-- `test:` - Adding or updating tests
-- `chore:` - Maintenance tasks
+```
+<type>(<scope>): <description>
 
-### Running Quality Checks
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:**
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `feat` | New feature | `feat(tasks): add vision detection task` |
+| `fix` | Bug fix | `fix(cli): handle missing config file` |
+| `docs` | Documentation | `docs: update installation guide` |
+| `style` | Code style (formatting) | `style: apply ruff formatting` |
+| `refactor` | Code refactoring | `refactor(core): simplify data loading` |
+| `perf` | Performance improvement | `perf: optimize cross-validation loop` |
+| `test` | Adding/updating tests | `test: add regression task tests` |
+| `build` | Build system changes | `build: update dependencies` |
+| `ci` | CI/CD changes | `ci: add Python 3.12 to matrix` |
+| `chore` | Maintenance | `chore: clean up unused imports` |
+
+**Breaking Changes:**
 
 ```bash
-# Linting
-ruff check src/ tests/
+feat(api)!: redesign configuration schema
+
+BREAKING CHANGE: RunConfig now requires `task_type` field
+```
+
+### CI/CD Pipeline
+
+GitHub Actions workflow (`.github/workflows/ci.yml`):
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        CI Pipeline                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Push/PR to main                                                │
+│       │                                                         │
+│       ▼                                                         │
+│  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────────────────┐  │
+│  │  Lint   │  │  Test   │  │ Security │  │ Build & Verify   │  │
+│  │         │  │ Matrix  │  │   Scan   │  │    Package       │  │
+│  │ • ruff  │  │ • 3.11  │  │ • bandit │  │ • python -m build│  │
+│  │ • mypy  │  │ • 3.12  │  │ • safety │  │ • pip install    │  │
+│  │         │  │ • 70%   │  │          │  │ • import check   │  │
+│  │         │  │   cov   │  │          │  │                  │  │
+│  └────┬────┘  └────┬────┘  └────┬─────┘  └────────┬─────────┘  │
+│       │            │            │                  │            │
+│       └────────────┴────────────┴──────────────────┘            │
+│                             │                                   │
+│                             ▼                                   │
+│                    ┌─────────────────┐                          │
+│                    │  Docker Build   │  (main branch only)      │
+│                    │  + Upload       │                          │
+│                    │  Artifacts      │                          │
+│                    └─────────────────┘                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Jobs:**
+
+| Job | Trigger | Description |
+|-----|---------|-------------|
+| `lint` | All pushes/PRs | Ruff linting + mypy type checking |
+| `test` | All pushes/PRs | Pytest with coverage (Python 3.11, 3.12) |
+| `security` | All pushes/PRs | Bandit security scan |
+| `build` | After lint+test pass | Build wheel, verify installation |
+| `docker` | Push to main | Build Docker image, cache layers |
+
+### Running Quality Checks Locally
+
+```bash
+# ============================================================
+# Quick check (recommended before committing)
+# ============================================================
+pre-commit run --all-files
+
+# ============================================================
+# Individual tools
+# ============================================================
+
+# Linting (with auto-fix)
+ruff check src/ tests/ --fix
 ruff format src/ tests/
 
 # Type checking
@@ -1286,28 +1433,252 @@ mypy src/cleanlab_demo
 # Security scan
 bandit -r src/cleanlab_demo -ll
 
-# Tests with coverage
+# Dependency vulnerability check
+pip install safety
+safety check
+
+# ============================================================
+# Testing
+# ============================================================
+
+# Run all tests
+pytest
+
+# Run with coverage report
 pytest --cov=cleanlab_demo --cov-report=term-missing --cov-fail-under=70
+
+# Run specific test file
+pytest tests/test_core.py -v
+
+# Run tests matching pattern
+pytest -k "test_multiclass" -v
+
+# Run tests in parallel (faster)
+pytest -n auto
+
+# Skip slow tests
+pytest -m "not slow"
+
+# ============================================================
+# Full CI simulation
+# ============================================================
+ruff check src/ tests/ && \
+ruff format --check src/ tests/ && \
+mypy src/cleanlab_demo && \
+bandit -r src/cleanlab_demo -ll && \
+pytest --cov=cleanlab_demo --cov-fail-under=70
 ```
+
+### Git Ignore Patterns
+
+The `.gitignore` is organized into sections for easy maintenance:
+
+```gitignore
+# ==============================================================================
+# Main Categories in .gitignore
+# ==============================================================================
+
+# Python: __pycache__/, *.py[cod], *.egg-info/, dist/, build/, *.so
+# Virtual Envs: .venv/, venv/, .python-version
+# IDE: .idea/, .vscode/, *.swp
+# Jupyter: .ipynb_checkpoints/
+# Type/Lint: .mypy_cache/, .ruff_cache/, .pytest_cache/
+# Environment: .env, .env.* (except .env.example)
+# OS: .DS_Store, Thumbs.db
+# Data: /data/, /artifacts/, /notebooks/data/, /notebooks/artifacts/
+# Models: *.pkl, *.h5, *.pt, *.pth, *.ckpt (large binary files)
+# Secrets: *_secret*, *.pem, *.key
+```
+
+**Key exclusions:**
+- All Python bytecode and cache files
+- Virtual environments (any naming convention)
+- IDE-specific files (PyCharm, VS Code, Vim, etc.)
+- Environment files containing secrets
+- Large data files and model artifacts
+- OS-generated metadata files
+
+### Docker Ignore Patterns
+
+The `.dockerignore` minimizes build context for faster builds:
+
+```dockerignore
+# ==============================================================================
+# Main Categories in .dockerignore
+# ==============================================================================
+
+# Version Control: .git/, .github/
+# IDE: .idea/, .vscode/
+# Python: __pycache__/, *.egg-info/, dist/, build/
+# Virtual Envs: .venv/, venv/
+# Testing/Lint: .pytest_cache/, .mypy_cache/, .ruff_cache/, .coverage
+# Jupyter: .ipynb_checkpoints/
+# Environment: .env (except .env.example)
+# Data: data/, artifacts/, *.pkl, *.h5, *.pt, *.zip
+# Docs: *.md (except README.md), docs/
+```
+
+**Benefits:**
+- Faster `docker build` (smaller context transfer)
+- Smaller final images (no test files, docs in prod)
+- No secrets accidentally copied into images
+
+### Environment Variables
+
+Use `.env.example` as a template:
+
+```bash
+# Copy template
+cp .env.example .env
+
+# Edit with your values
+vim .env
+
+```
+
+**Never commit `.env` files** — they're git-ignored by default.
+
+### Dependency Management
+
+Dependencies are managed in `pyproject.toml` with optional groups:
+
+```bash
+# Core dependencies only
+pip install -e .
+
+# Development (testing, linting)
+pip install -e ".[dev]"
+
+# UI (Streamlit)
+pip install -e ".[ui]"
+
+# Notebooks (JupyterLab)
+pip install -e ".[notebooks]"
+
+# AI reports (pydantic-ai)
+pip install -e ".[ai]"
+
+# Everything
+pip install -e ".[all]"
+```
+
+**Updating dependencies:**
+
+```bash
+# Check for outdated packages
+pip list --outdated
+
+# Update pre-commit hooks
+pre-commit autoupdate
+
+# Regenerate lock file (if using uv)
+uv lock
+```
+
+### Release Checklist
+
+Before releasing a new version:
+
+- [ ] All tests pass (`pytest --cov-fail-under=70`)
+- [ ] No linting errors (`ruff check src/ tests/`)
+- [ ] No type errors (`mypy src/cleanlab_demo`)
+- [ ] No security issues (`bandit -r src/cleanlab_demo -ll`)
+- [ ] Update version in `src/cleanlab_demo/__init__.py`
+- [ ] Update `CHANGELOG.md` (if present)
+- [ ] Create git tag (`git tag -a v0.2.0 -m "Release v0.2.0"`)
+- [ ] Push tag (`git push origin v0.2.0`)
+- [ ] Verify CI passes on the tag
+- [ ] Build and upload to PyPI (if applicable)
+
+---
 
 ## Development
 
+### Getting Started
+
 ```bash
-# Install dev dependencies
-pip install -e ".[dev]"
+# Clone the repository
+git clone https://github.com/your-org/cleanlab-demo.git
+cd cleanlab-demo
 
-# Run tests with coverage
-pytest --cov=cleanlab_demo --cov-report=term-missing
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Type checking
-mypy src/cleanlab_demo
+# Install with dev dependencies
+pip install -e ".[dev,ui,notebooks]"
 
-# Linting
-ruff check src/
-ruff format src/
+# Set up pre-commit hooks
+pre-commit install
+pre-commit install --hook-type commit-msg
+
+# Run tests to verify setup
+pytest -v
 ```
+
+### Adding a New Task
+
+1. Create a new directory under `src/cleanlab_demo/tasks/`:
+   ```
+   tasks/
+   └── new_task/
+       ├── __init__.py
+       ├── provider.py    # Data loading
+       ├── schemas.py     # Pydantic models
+       └── task.py        # Task implementation
+   ```
+
+2. Implement the `DataProvider` and `Task` classes following the base classes in `tasks/base.py`
+
+3. Add tests in `tests/test_tasks/test_new_task.py`
+
+4. Add a notebook in `notebooks/XX_new_task.ipynb`
+
+5. Update the README with documentation
+
+### Debugging Tips
+
+```bash
+# Run with verbose logging
+CLEANLAB_DEMO_LOG_LEVEL=DEBUG cleanlab-demo run -d adult_income
+
+# Run pytest with output
+pytest -v -s --tb=long
+
+# Run specific test with debugger
+pytest tests/test_core.py::test_specific -v --pdb
+
+# Profile memory usage
+pip install memory_profiler
+python -m memory_profiler src/cleanlab_demo/cli.py run -d adult_income
+```
+
+---
 
 ## License
 
-MIT
+MIT License
+
+Copyright (c) 2024-2026 Cleanlab Demo Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
 

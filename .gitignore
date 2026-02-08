@@ -1,20 +1,317 @@
-.idea/
-.venv/
+# ==============================================================================
+# Cleanlab Demo - .gitignore
+# ==============================================================================
+# This file specifies intentionally untracked files that Git should ignore.
+# See: https://git-scm.com/docs/gitignore
+# ==============================================================================
+
+# ==============================================================================
+# Python
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
 *.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Cython debug symbols
+cython_debug/
+
+# ==============================================================================
+# Virtual Environments
+# ==============================================================================
+
+.venv/
+venv/
+ENV/
+env/
+.env/
+env.bak/
+venv.bak/
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+.pdm-python
+.pdm-build/
+
+# PEP 582
+__pypackages__/
+
+# ==============================================================================
+# IDE / Editors
+# ==============================================================================
+
+# JetBrains (PyCharm, IntelliJ)
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# ==============================================================================
+# Jupyter Notebooks
+# ==============================================================================
+
 .ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Jupyter Notebook outputs (uncomment if you want to ignore outputs)
+# *.ipynb
+
+# ==============================================================================
+# Type Checkers / Linters / Formatters
+# ==============================================================================
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ruff
+.ruff_cache/
+
+# pytype
+.pytype/
+
+# pyre
+.pyre/
+
+# pylint
+.pylint.d/
+
+# ==============================================================================
+# Environment Variables
+# ==============================================================================
+
+# Environment files (NEVER commit secrets!)
 .env
 .env.*
+.envrc
+*.env
 !.env.example
+!.env.template
 
-# Data + artifacts (top-level directories only)
+# AWS
+.aws/
+
+# ==============================================================================
+# OS Generated Files
+# ==============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# macOS directory metadata
+Icon
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# Project-Specific: Data & Artifacts
+# ==============================================================================
+
+# Data directories (large files, downloaded datasets)
 /data/
-/artifacts/
-
-# Notebook caches / outputs
 /notebooks/data/
+
+# Artifacts (model outputs, experiment results)
+/artifacts/
 /notebooks/artifacts/
+
+# Logs
+logs/
+*.log
+log.txt
+
+# Model files (often large)
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Keep sample/small data files if needed (uncomment)
+# !data/sample/
+# !data/*.csv
+
+# ==============================================================================
+# Docker
+# ==============================================================================
+
+# Docker volumes / local data (if mounted)
+docker-data/
+
+# ==============================================================================
+# Documentation
+# ==============================================================================
+
+# Sphinx documentation
+docs/_build/
+
+# MkDocs documentation
+/site/
+
+# ==============================================================================
+# Miscellaneous
+# ==============================================================================
+
+# Scratch / temporary files
+scratch/
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Secrets / credentials (additional patterns)
+*_secret*
+*_credentials*
+*.pem
+*.key
+id_rsa*
+*.p12
+*.pfx
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Compressed files (usually large)
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ==============================================================================
+# Keep certain files
+# ==============================================================================
+
+# Keep .gitkeep files (used to track empty directories)
+!.gitkeep
+!**/.gitkeep
+
+
