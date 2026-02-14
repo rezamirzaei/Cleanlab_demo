@@ -10,4 +10,3 @@ __all__ = [
     "TokenClassificationTask",
     "run_token_classification",
 ]
-

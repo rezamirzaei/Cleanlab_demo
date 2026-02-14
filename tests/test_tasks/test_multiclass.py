@@ -10,7 +10,9 @@ from tests.test_tasks.conftest import MockClassificationProvider
 class TestMulticlassClassificationTask:
     """Tests for MulticlassClassificationTask."""
 
-    def test_task_runs_successfully(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_task_runs_successfully(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that task runs without errors."""
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
@@ -32,7 +34,9 @@ class TestMulticlassClassificationTask:
         assert result.n_test > 0
         assert result.n_classes == 3
 
-    def test_task_returns_valid_metrics(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_task_returns_valid_metrics(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that task returns valid metrics."""
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
@@ -56,7 +60,9 @@ class TestMulticlassClassificationTask:
         # Check pruned metrics
         assert 0.0 <= result.metrics.pruned_retrain.accuracy <= 1.0
 
-    def test_task_with_noise_finds_issues(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_task_with_noise_finds_issues(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that task with noise finds label issues."""
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
@@ -77,7 +83,9 @@ class TestMulticlassClassificationTask:
         assert result.cleanlab.n_issues_found > 0
         assert result.noise.n_flipped > 0
 
-    def test_task_reproducibility(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_task_reproducibility(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that task produces reproducible results."""
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
@@ -152,7 +160,9 @@ class TestMulticlassConfig:
 class TestMulticlassResult:
     """Tests for MulticlassClassificationResult."""
 
-    def test_result_has_timestamp(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_result_has_timestamp(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that result has timestamp."""
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
@@ -167,13 +177,16 @@ class TestMulticlassResult:
         assert result.timestamp is not None
         assert "T" in result.timestamp
 
-    def test_result_json_serialization(self, mock_classification_provider: MockClassificationProvider) -> None:
+    def test_result_json_serialization(
+        self, mock_classification_provider: MockClassificationProvider
+    ) -> None:
         """Test that result can be serialized to JSON."""
+        import json
+
         from cleanlab_demo.tasks.multiclass import (
             MulticlassClassificationConfig,
             MulticlassClassificationTask,
         )
-        import json
 
         task = MulticlassClassificationTask(mock_classification_provider)
         config = MulticlassClassificationConfig(cv_folds=3, seed=42)
@@ -186,4 +199,3 @@ class TestMulticlassResult:
         assert "dataset" in data
         assert "metrics" in data
         assert "cleanlab" in data
-

@@ -75,18 +75,14 @@ class TestNoiseInjectionMixin:
     def test_classification_noise_no_noise(self) -> None:
         """Test with frac=0 returns unchanged labels."""
         y = np.array([0, 1, 2, 0, 1, 2])
-        y_noisy, flipped = NoiseInjectionMixin.inject_classification_noise(
-            y, frac=0.0, seed=42
-        )
+        y_noisy, flipped = NoiseInjectionMixin.inject_classification_noise(y, frac=0.0, seed=42)
         np.testing.assert_array_equal(y, y_noisy)
         assert len(flipped) == 0
 
     def test_classification_noise_with_noise(self) -> None:
         """Test with noise fraction."""
         y = np.array([0, 1, 2, 0, 1, 2, 0, 1, 2, 0])
-        y_noisy, flipped = NoiseInjectionMixin.inject_classification_noise(
-            y, frac=0.3, seed=42
-        )
+        y_noisy, flipped = NoiseInjectionMixin.inject_classification_noise(y, frac=0.3, seed=42)
 
         # Some labels should be flipped
         assert len(flipped) == 3  # 30% of 10
@@ -100,12 +96,8 @@ class TestNoiseInjectionMixin:
         """Test that noise injection is reproducible with same seed."""
         y = np.array([0, 1, 2, 0, 1, 2, 0, 1, 2, 0])
 
-        y_noisy1, flipped1 = NoiseInjectionMixin.inject_classification_noise(
-            y, frac=0.3, seed=42
-        )
-        y_noisy2, flipped2 = NoiseInjectionMixin.inject_classification_noise(
-            y, frac=0.3, seed=42
-        )
+        y_noisy1, flipped1 = NoiseInjectionMixin.inject_classification_noise(y, frac=0.3, seed=42)
+        y_noisy2, flipped2 = NoiseInjectionMixin.inject_classification_noise(y, frac=0.3, seed=42)
 
         np.testing.assert_array_equal(y_noisy1, y_noisy2)
         np.testing.assert_array_equal(flipped1, flipped2)
@@ -113,24 +105,22 @@ class TestNoiseInjectionMixin:
     def test_multilabel_noise_no_noise(self) -> None:
         """Test multilabel with frac=0."""
         y = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0]])
-        y_noisy, corrupted = NoiseInjectionMixin.inject_multilabel_noise(
-            y, frac=0.0, seed=42
-        )
+        y_noisy, corrupted = NoiseInjectionMixin.inject_multilabel_noise(y, frac=0.0, seed=42)
         np.testing.assert_array_equal(y, y_noisy)
         assert len(corrupted) == 0
 
     def test_multilabel_noise_with_noise(self) -> None:
         """Test multilabel with noise fraction."""
-        y = np.array([
-            [1, 0, 1, 0],
-            [0, 1, 0, 1],
-            [1, 1, 0, 0],
-            [0, 0, 1, 1],
-            [1, 0, 0, 1],
-        ])
-        y_noisy, corrupted = NoiseInjectionMixin.inject_multilabel_noise(
-            y, frac=0.4, seed=42
+        y = np.array(
+            [
+                [1, 0, 1, 0],
+                [0, 1, 0, 1],
+                [1, 1, 0, 0],
+                [0, 0, 1, 1],
+                [1, 0, 0, 1],
+            ]
         )
+        y_noisy, corrupted = NoiseInjectionMixin.inject_multilabel_noise(y, frac=0.4, seed=42)
 
         assert len(corrupted) == 2  # 40% of 5
         assert not np.array_equal(y, y_noisy)
@@ -138,18 +128,14 @@ class TestNoiseInjectionMixin:
     def test_regression_noise_no_noise(self) -> None:
         """Test regression with frac=0."""
         y = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-        y_noisy, corrupted = NoiseInjectionMixin.inject_regression_noise(
-            y, frac=0.0, seed=42
-        )
+        y_noisy, corrupted = NoiseInjectionMixin.inject_regression_noise(y, frac=0.0, seed=42)
         np.testing.assert_array_equal(y, y_noisy)
         assert len(corrupted) == 0
 
     def test_regression_noise_with_noise(self) -> None:
         """Test regression with noise fraction."""
         y = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0])
-        y_noisy, corrupted = NoiseInjectionMixin.inject_regression_noise(
-            y, frac=0.3, seed=42
-        )
+        y_noisy, corrupted = NoiseInjectionMixin.inject_regression_noise(y, frac=0.3, seed=42)
 
         assert len(corrupted) == 3
         # Corrupted values should be different
@@ -205,12 +191,12 @@ class TestPruningMixin:
     def test_compute_prune_metrics_partial(self) -> None:
         """Test prune metrics with partial overlap."""
         prune_indices = {1, 2, 5, 6}  # 2 correct, 2 wrong
-        ground_truth = {1, 2, 3, 4}   # 2 found, 2 missed
+        ground_truth = {1, 2, 3, 4}  # 2 found, 2 missed
 
         metrics = PruningMixin.compute_prune_metrics(prune_indices, ground_truth)
 
         assert metrics["precision"] == 0.5  # 2/4
-        assert metrics["recall"] == 0.5     # 2/4
+        assert metrics["recall"] == 0.5  # 2/4
 
     def test_compute_prune_metrics_no_prune(self) -> None:
         """Test prune metrics with no pruning."""
@@ -244,4 +230,3 @@ class TestEvaluationMixin:
         """Test division by zero with custom default."""
         result = EvaluationMixin.safe_divide(10.0, 0.0, default=-1.0)
         assert result == -1.0
-

@@ -52,4 +52,3 @@ class RegressionCleanLearningResult(DemoResult):
     noise: RegressionNoiseSummary
     cleanlab: RegressionCleanlabSummary
     metrics: RegressionMetricsByVariant
-

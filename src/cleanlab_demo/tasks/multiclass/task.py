@@ -60,7 +60,9 @@ def build_multiclass_model(seed: int, max_iter: int = 500) -> Pipeline:
     )
 
 
-def evaluate_multiclass(model: Pipeline, X_test: pd.DataFrame, y_test: np.ndarray) -> MulticlassMetrics:
+def evaluate_multiclass(
+    model: Pipeline, X_test: pd.DataFrame, y_test: np.ndarray
+) -> MulticlassMetrics:
     y_pred = model.predict(X_test)
     y_proba = model.predict_proba(X_test)
     classes = model.named_steps["model"].classes_

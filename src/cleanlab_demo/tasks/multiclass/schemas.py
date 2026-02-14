@@ -54,4 +54,3 @@ class MulticlassClassificationResult(DemoResult):
     noise: MulticlassNoiseSummary
     cleanlab: MulticlassCleanlabSummary
     metrics: MulticlassMetricsByVariant
-

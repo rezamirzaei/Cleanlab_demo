@@ -48,7 +48,7 @@ class OpenMLMultilabelProvider(MultilabelDataProvider):
         """Convert target DataFrame to multi-hot encoding."""
         normalized = target_df.astype(str)
         as_bool = normalized.apply(lambda col: col.str.upper().eq("TRUE"))
-        return as_bool.to_numpy(dtype=int)
+        return np.asarray(as_bool.to_numpy(dtype=int), dtype=int)
 
     def load(self, seed: int, **kwargs: Any) -> tuple[pd.DataFrame, np.ndarray]:
         """Load and return features and multi-hot labels."""

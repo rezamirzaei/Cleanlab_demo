@@ -250,6 +250,24 @@ log.txt
 *.ckpt
 *.safetensors
 
+# Data formats
+*.parquet
+*.feather
+*.arrow
+*.npy
+*.npz
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# DVC
+.dvc/
+*.dvc
+
+# Weights & Biases
+wandb/
+
 # Keep sample/small data files if needed (uncomment)
 # !data/sample/
 # !data/*.csv

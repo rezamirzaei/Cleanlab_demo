@@ -78,12 +78,14 @@ class TestMetricComputation:
         """Test classification metrics with probabilities."""
         y_true = np.array([0, 1, 0, 1])
         y_pred = np.array([0, 1, 0, 1])
-        y_proba = np.array([
-            [0.9, 0.1],
-            [0.1, 0.9],
-            [0.8, 0.2],
-            [0.2, 0.8],
-        ])
+        y_proba = np.array(
+            [
+                [0.9, 0.1],
+                [0.1, 0.9],
+                [0.8, 0.2],
+                [0.2, 0.8],
+            ]
+        )
 
         metrics = compute_classification_metrics(y_true, y_pred, y_proba)
 
@@ -131,11 +133,13 @@ class TestDataUtilities:
 
     def test_labels_to_list_format(self) -> None:
         """Test conversion to list format."""
-        y = np.array([
-            [1, 0, 1, 0],
-            [0, 1, 0, 1],
-            [1, 1, 1, 0],
-        ])
+        y = np.array(
+            [
+                [1, 0, 1, 0],
+                [0, 1, 0, 1],
+                [1, 1, 1, 0],
+            ]
+        )
 
         result = labels_to_list_format(y)
 
@@ -143,11 +147,13 @@ class TestDataUtilities:
 
     def test_labels_to_list_format_empty_row(self) -> None:
         """Test conversion with row having no labels."""
-        y = np.array([
-            [1, 0],
-            [0, 0],  # No labels
-            [0, 1],
-        ])
+        y = np.array(
+            [
+                [1, 0],
+                [0, 0],  # No labels
+                [0, 1],
+            ]
+        )
 
         result = labels_to_list_format(y)
 

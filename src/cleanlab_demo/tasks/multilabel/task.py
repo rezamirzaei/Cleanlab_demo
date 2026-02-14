@@ -55,7 +55,9 @@ def build_multilabel_model() -> Pipeline:
     )
 
 
-def evaluate_multilabel(model: Pipeline, X_test: pd.DataFrame, y_test: np.ndarray) -> MultilabelMetrics:
+def evaluate_multilabel(
+    model: Pipeline, X_test: pd.DataFrame, y_test: np.ndarray
+) -> MultilabelMetrics:
     y_pred = model.predict(X_test)
     return MultilabelMetrics(
         micro_f1=float(f1_score(y_test, y_pred, average="micro")),

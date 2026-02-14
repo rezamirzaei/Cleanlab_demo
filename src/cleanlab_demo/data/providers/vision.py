@@ -108,7 +108,9 @@ class PennFudanPedProvider(VisionDataProvider):
             img_path = img_paths[idx]
             mask_path = masks_dir / f"{img_path.stem}_mask.png"
             if not mask_path.exists():
-                raise RuntimeError(f"Missing mask for `{img_path.name}`: expected `{mask_path.name}`")
+                raise RuntimeError(
+                    f"Missing mask for `{img_path.name}`: expected `{mask_path.name}`"
+                )
 
             img = Image.open(img_path).convert("RGB")
             mask = Image.open(mask_path)

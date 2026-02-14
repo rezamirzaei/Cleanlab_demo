@@ -16,4 +16,3 @@ __all__ = [
     "MulticlassDataProvider",
     "run_multiclass_classification",
 ]
-

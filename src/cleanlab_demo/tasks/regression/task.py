@@ -148,4 +148,3 @@ def run_regression_cleanlearning(
 ) -> RegressionCleanLearningResult:
     cfg = config or RegressionCleanLearningConfig(**kwargs)
     return RegressionCleanLearningTask(data_provider).run(cfg)
-

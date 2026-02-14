@@ -432,7 +432,9 @@ def _render_regression_bike_cleanlearning_demo() -> None:
 
 def _render_outlier_california_housing_demo() -> None:
     st.subheader("Outlier detection (California Housing) + Cleanlab Datalab")
-    st.caption("Optional synthetic feature outliers for evaluation (set to 0.0 for real-world run).")
+    st.caption(
+        "Optional synthetic feature outliers for evaluation (set to 0.0 for real-world run)."
+    )
 
     with st.sidebar:
         st.markdown("---")

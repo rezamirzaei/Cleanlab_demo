@@ -7,6 +7,7 @@ including model building, evaluation, and data manipulation.
 
 from __future__ import annotations
 
+from contextlib import suppress
 from typing import Any
 
 import numpy as np
@@ -63,15 +64,17 @@ def build_classifier_pipeline(
     if scale:
         steps.append(("scale", StandardScaler()))
 
-    steps.append((
-        "model",
-        LogisticRegression(
-            max_iter=max_iter,
-            solver="lbfgs",
-            random_state=seed,
-            n_jobs=1,
-        ),
-    ))
+    steps.append(
+        (
+            "model",
+            LogisticRegression(
+                max_iter=max_iter,
+                solver="lbfgs",
+                random_state=seed,
+                n_jobs=1,
+            ),
+        )
+    )
 
     return Pipeline(steps=steps)
 
@@ -100,16 +103,18 @@ def build_multilabel_pipeline(
     if scale:
         steps.append(("scale", StandardScaler()))
 
-    steps.append((
-        "model",
-        OneVsRestClassifier(
-            LogisticRegression(
-                max_iter=max_iter,
-                solver="lbfgs",
-                random_state=seed,
-            )
-        ),
-    ))
+    steps.append(
+        (
+            "model",
+            OneVsRestClassifier(
+                LogisticRegression(
+                    max_iter=max_iter,
+                    solver="lbfgs",
+                    random_state=seed,
+                )
+            ),
+        )
+    )
 
     return Pipeline(steps=steps)
 
@@ -138,10 +143,12 @@ def build_regressor_pipeline(
     if scale:
         steps.append(("scale", StandardScaler()))
 
-    steps.append((
-        "model",
-        Ridge(alpha=alpha, random_state=seed),
-    ))
+    steps.append(
+        (
+            "model",
+            Ridge(alpha=alpha, random_state=seed),
+        )
+    )
 
     return Pipeline(steps=steps)
 
@@ -256,10 +263,8 @@ def compute_classification_metrics(
     }
 
     if y_proba is not None:
-        try:
+        with suppress(ValueError):
             metrics["log_loss"] = float(log_loss(y_true, y_proba))
-        except ValueError:
-            pass  # Can fail with some label configurations
 
     return metrics
 
@@ -346,9 +351,9 @@ def ensure_numpy_array(arr: Any) -> np.ndarray:
     if isinstance(arr, np.ndarray):
         return arr
     if isinstance(arr, pd.Series):
-        return arr.to_numpy()
+        return np.asarray(arr.to_numpy())
     if isinstance(arr, pd.DataFrame):
-        return arr.to_numpy()
+        return np.asarray(arr.to_numpy())
     return np.asarray(arr)
 
 
@@ -372,5 +377,3 @@ def train_test_indices(
     indices = rng.permutation(n)
     split_point = int(n * (1 - test_size))
     return indices[:split_point], indices[split_point:]
-
-

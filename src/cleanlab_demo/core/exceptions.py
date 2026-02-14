@@ -68,7 +68,6 @@ class ConfigurationError(CleanlabDemoError):
     """
 
 
-
 class DataLoadError(CleanlabDemoError):
     """
     Raised when data loading fails.
@@ -85,7 +84,6 @@ class DataLoadError(CleanlabDemoError):
         ...     details={"dataset": "adult_income", "path": "/data/adult.csv"}
         ... )
     """
-
 
 
 class ValidationError(CleanlabDemoError):
@@ -106,7 +104,6 @@ class ValidationError(CleanlabDemoError):
     """
 
 
-
 class ModelError(CleanlabDemoError):
     """
     Raised when model operations fail.
@@ -124,7 +121,6 @@ class ModelError(CleanlabDemoError):
     """
 
 
-
 class TaskExecutionError(CleanlabDemoError):
     """
     Raised when task execution fails.
@@ -140,5 +136,3 @@ class TaskExecutionError(CleanlabDemoError):
         ...     details={"task": "MulticlassClassificationTask", "stage": "cv_predict"}
         ... )
     """
-
-

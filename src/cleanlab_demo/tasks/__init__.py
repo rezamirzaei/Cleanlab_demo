@@ -1,5 +1,11 @@
 """Cleanlab task implementations used by the UI and notebooks."""
 
+from cleanlab_demo.tasks.anomaly import (
+    AnomalyDetectionConfig,
+    AnomalyDetectionResult,
+    AnomalyDetectionTask,
+    run_anomaly_detection,
+)
 from cleanlab_demo.tasks.base import DemoConfig, DemoResult
 from cleanlab_demo.tasks.multiannotator import (
     MultiannotatorConfig,
@@ -39,6 +45,9 @@ from cleanlab_demo.tasks.vision import (
 
 
 __all__ = [
+    "AnomalyDetectionConfig",
+    "AnomalyDetectionResult",
+    "AnomalyDetectionTask",
     "DemoConfig",
     "DemoResult",
     "MultiannotatorConfig",
@@ -62,4 +71,5 @@ __all__ = [
     "VisionDetectionSegmentationConfig",
     "VisionDetectionSegmentationResult",
     "VisionDetectionSegmentationTask",
+    "run_anomaly_detection",
 ]

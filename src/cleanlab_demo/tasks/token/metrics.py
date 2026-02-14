@@ -25,4 +25,3 @@ def evaluate_token_model(
         token_accuracy=float(accuracy_score(y_true_arr, y_pred_arr)),
         macro_f1=float(f1_score(y_true_arr, y_pred_arr, average="macro")),
     )
-

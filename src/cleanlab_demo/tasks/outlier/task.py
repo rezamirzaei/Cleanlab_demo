@@ -58,7 +58,11 @@ class OutlierDetectionTask:
         features = StandardScaler().fit_transform(X_noisy[numeric_cols].to_numpy(dtype=float))
         df_with_label = pd.concat([X_noisy, pd.Series(y, name=label_col)], axis=1)
 
-        issue_types = {"outlier": {}, "near_duplicate": {}, "non_iid": {}}
+        issue_types: dict[str, dict[str, Any]] = {
+            "outlier": {},
+            "near_duplicate": {},
+            "non_iid": {},
+        }
         datalab = Datalab(
             data=df_with_label,
             task=self.data_provider.task_type,
@@ -122,4 +126,3 @@ def run_outlier_detection(
 ) -> OutlierDetectionResult:
     cfg = config or OutlierDetectionConfig(**kwargs)
     return OutlierDetectionTask(data_provider).run(cfg)
-

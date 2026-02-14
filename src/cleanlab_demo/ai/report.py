@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from pydantic import BaseModel, Field
 
@@ -190,12 +190,12 @@ def generate_ai_report(result_path: Path | None = None, *, use_ai: bool = True) 
         @agent.tool
         def get_result(ctx: RunContext[Deps]) -> dict[str, Any]:
             """Return the full experiment result JSON."""
-            return ctx.deps.result
+            return cast(dict[str, Any], ctx.deps.result)
 
         @agent.tool
         def get_baseline_report(ctx: RunContext[Deps]) -> dict[str, Any]:
             """Return the deterministic (non-LLM) baseline report JSON."""
-            return ctx.deps.baseline.model_dump(mode="json")
+            return cast(dict[str, Any], ctx.deps.baseline.model_dump(mode="json"))
 
         @agent.tool
         def get_top_label_issues(ctx: RunContext[Deps], n: int = 10) -> list[dict[str, Any]]:
@@ -221,7 +221,7 @@ def generate_ai_report(result_path: Path | None = None, *, use_ai: bool = True) 
             "Generate the report. Prefer calling tools instead of relying on assumptions.",
             deps=deps,
         )
-        return ai_result.output.model_dump_json(indent=2)
+        return cast(str, ai_result.output.model_dump_json(indent=2))
     except Exception as e:
         logger.warning(f"AI report generation failed: {e}, using deterministic fallback")
         return baseline.model_dump_json(indent=2)

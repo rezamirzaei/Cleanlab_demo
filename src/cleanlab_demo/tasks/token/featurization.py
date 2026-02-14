@@ -49,4 +49,3 @@ def flatten_for_fit(
             X_out.append(x)
             y_out.append(int(y))
     return X_out, np.asarray(y_out, dtype=int)
-

@@ -10,4 +10,3 @@ __all__ = [
     "MultiannotatorTask",
     "run_multiannotator",
 ]
-

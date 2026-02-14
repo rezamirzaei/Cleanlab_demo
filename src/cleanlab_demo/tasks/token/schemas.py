@@ -55,4 +55,3 @@ class TokenClassificationResult(DemoResult):
     noise: TokenClassificationNoiseSummary
     cleanlab: TokenClassificationCleanlabSummary
     metrics: TokenClassificationMetricsByVariant
-

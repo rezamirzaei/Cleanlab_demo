@@ -16,4 +16,3 @@ __all__ = [
     "VisionDetectionSegmentationTask",
     "run_vision_detection_segmentation",
 ]
-

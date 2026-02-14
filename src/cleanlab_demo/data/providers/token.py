@@ -111,6 +111,7 @@ class UDEnglishEWTProvider(TokenClassificationDataProvider):
 
     def __init__(self, data_dir: Path | None = None) -> None:
         from cleanlab_demo.settings import settings
+
         self._data_dir = data_dir or (settings.data_dir / "ud_ewt")
 
     @property

@@ -40,7 +40,7 @@ def create_estimator(task: TaskType, model_config: ModelConfig, *, random_state:
 
     if task == TaskType.regression:
         if name == ModelName.ridge:
-            defaults: dict[str, Any] = {}
+            defaults = {}
             return Ridge(**{**defaults, **params})
         if name == ModelName.random_forest:
             defaults = {"n_estimators": 500, "n_jobs": 1, "random_state": random_state}

@@ -550,7 +550,7 @@ class ExperimentRunner:
 
         return RunResult(
             dataset=config.dataset,
-            task=cast("TaskType", config.task),
+            task=config.task,
             model=cast("Any", config.model).name,
             n_train=len(X_train),
             n_test=len(X_test),

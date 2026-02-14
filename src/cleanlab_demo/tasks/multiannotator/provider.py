@@ -19,4 +19,3 @@ class MultiannotatorDataProvider(ABC):
         `labels_multiannotator` is a DataFrame of shape (N, M) containing integer class labels
         and NaN for missing labels.
         """
-

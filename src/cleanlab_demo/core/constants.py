@@ -156,4 +156,3 @@ DEFAULT_LOG_LEVEL: Final[str] = "INFO"
 
 LOG_FORMAT: Final[str] = "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
 """Standard log format string."""
-

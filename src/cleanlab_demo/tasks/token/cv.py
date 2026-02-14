@@ -40,4 +40,3 @@ def cv_pred_probs(
             f"Missing CV predictions for {len(missing)} sentences, e.g. {missing[:5]}"
         )
     return [cast("np.ndarray", v) for v in pred_probs_by_sent]
-

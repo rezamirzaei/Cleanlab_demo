@@ -5,6 +5,12 @@ This module provides concrete implementations of data providers for various data
 These can be customized or replaced to use different datasets with the same task logic.
 """
 
+from cleanlab_demo.data.providers.anomaly import (
+    CaliforniaHousingAnomalyProvider,
+    ForestCoverAnomalyProvider,
+    KDDCup99Provider,
+    SyntheticAnomalyProvider,
+)
 from cleanlab_demo.data.providers.multiannotator import (
     MovieLens100KProvider,
 )
@@ -35,15 +41,19 @@ from cleanlab_demo.data.providers.vision import (
 
 __all__ = [
     "BikeSharingDataProvider",
+    "CaliforniaHousingAnomalyProvider",
     "CaliforniaHousingDataProvider",
     "CaliforniaHousingOutlierProvider",
     "ConlluDataProvider",
     "CovtypeDataProvider",
     "EmotionsDataProvider",
+    "ForestCoverAnomalyProvider",
+    "KDDCup99Provider",
     "MovieLens100KProvider",
     "OpenMLMultilabelProvider",
     "PennFudanPedProvider",
     "SKLearnDatasetProvider",
+    "SyntheticAnomalyProvider",
     "TabularRegressionProvider",
     "UDEnglishEWTProvider",
 ]

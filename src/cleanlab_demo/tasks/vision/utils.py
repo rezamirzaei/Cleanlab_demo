@@ -5,7 +5,7 @@ from typing import Any
 import numpy as np
 
 
-_VISION_DEPS_HELP = 'Install with: `pip install -e .` (or `uv sync`).'
+_VISION_DEPS_HELP = "Install with: `pip install -e .` (or `uv sync`)."
 
 
 def require_vision_deps() -> tuple[Any, Any]:
@@ -43,7 +43,9 @@ def clip_boxes_xyxy(boxes: np.ndarray, *, w: int, h: int) -> np.ndarray:
     return b
 
 
-def corrupt_boxes(boxes: np.ndarray, *, img_w: int, img_h: int, seed: int) -> tuple[np.ndarray, bool]:
+def corrupt_boxes(
+    boxes: np.ndarray, *, img_w: int, img_h: int, seed: int
+) -> tuple[np.ndarray, bool]:
     """Corrupt boxes by dropping or shifting."""
     rng = np.random.default_rng(seed=seed)
     b = boxes.astype(float).copy()

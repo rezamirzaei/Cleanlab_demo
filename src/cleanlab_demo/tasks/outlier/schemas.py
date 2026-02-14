@@ -43,4 +43,3 @@ class OutlierDetectionResult(DemoResult):
     n_rows: int
     synthetic_outliers: SyntheticOutliersSummary
     cleanlab: OutlierDetectionCleanlabSummary
-

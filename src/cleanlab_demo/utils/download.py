@@ -17,7 +17,6 @@ class DownloadError(Exception):
     """Error during file download."""
 
 
-
 def download_file(
     url: str,
     dest: Path,

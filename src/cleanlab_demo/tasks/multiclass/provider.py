@@ -15,4 +15,3 @@ class MulticlassDataProvider(ABC):
     @abstractmethod
     def load(self, seed: int, **kwargs: Any) -> tuple[pd.DataFrame, np.ndarray]:
         """Return (X, y) where y contains integer class labels."""
-

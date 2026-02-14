@@ -10,4 +10,3 @@ __all__ = [
     "OutlierDetectionTask",
     "run_outlier_detection",
 ]
-

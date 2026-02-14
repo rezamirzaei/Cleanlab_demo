@@ -86,6 +86,7 @@ class CaliforniaHousingDataProvider(TabularRegressionProvider):
 
     def __init__(self, max_rows: int = 12_000) -> None:
         from sklearn.datasets import fetch_california_housing
+
         super().__init__(
             name="sklearn.fetch_california_housing",
             load_func=fetch_california_housing,

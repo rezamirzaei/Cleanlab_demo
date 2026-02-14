@@ -14,4 +14,3 @@ class RegressionDataProvider(ABC):
     @abstractmethod
     def load(self, seed: int, **kwargs: Any) -> tuple[np.ndarray, np.ndarray]:
         """Return (X, y) where X is numeric features and y is continuous target."""
-

@@ -39,4 +39,3 @@ class VisionDataProvider(ABC):
     @abstractmethod
     def get_model(self) -> tuple[Any, int]:
         """Return (model, target_class_id)."""
-

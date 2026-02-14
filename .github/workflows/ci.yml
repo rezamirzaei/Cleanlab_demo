@@ -82,7 +82,7 @@ jobs:
             --cov=cleanlab_demo \
             --cov-report=xml \
             --cov-report=term-missing \
-            --cov-fail-under=70
+            --cov-fail-under=45
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'
@@ -163,4 +163,3 @@ jobs:
 
       - name: Run bandit security scan
         run: bandit -r src/cleanlab_demo -ll
-

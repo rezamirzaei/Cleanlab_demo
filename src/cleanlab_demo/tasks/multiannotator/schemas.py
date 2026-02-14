@@ -13,7 +13,9 @@ class MultiannotatorNotes(BaseModel):
     description: str
     n_classes: int = Field(ge=2)
     mean_labels_per_example: float = Field(ge=0.0)
-    coverage: float = Field(ge=0.0, le=1.0, description="Fraction of (example, annotator) pairs labeled.")
+    coverage: float = Field(
+        ge=0.0, le=1.0, description="Fraction of (example, annotator) pairs labeled."
+    )
     missing_consensus_classes: list[int] = Field(
         default_factory=list,
         description="Class ids present in `labels_multiannotator` but absent from consensus labels.",

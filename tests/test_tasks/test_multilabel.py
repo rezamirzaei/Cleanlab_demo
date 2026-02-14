@@ -32,7 +32,9 @@ class TestMultilabelClassificationTask:
         assert result.n_test > 0
         assert result.n_labels == 4
 
-    def test_task_returns_valid_metrics(self, mock_multilabel_provider: MockMultilabelProvider) -> None:
+    def test_task_returns_valid_metrics(
+        self, mock_multilabel_provider: MockMultilabelProvider
+    ) -> None:
         """Test that task returns valid metrics."""
         from cleanlab_demo.tasks.multilabel import (
             MultilabelClassificationConfig,
@@ -54,7 +56,9 @@ class TestMultilabelClassificationTask:
         assert 0.0 <= result.metrics.baseline.subset_accuracy <= 1.0
         assert 0.0 <= result.metrics.baseline.hamming_loss <= 1.0
 
-    def test_task_with_noise_finds_issues(self, mock_multilabel_provider: MockMultilabelProvider) -> None:
+    def test_task_with_noise_finds_issues(
+        self, mock_multilabel_provider: MockMultilabelProvider
+    ) -> None:
         """Test that task with noise finds label issues."""
         from cleanlab_demo.tasks.multilabel import (
             MultilabelClassificationConfig,

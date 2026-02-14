@@ -39,7 +39,7 @@ class StringDtypeConverter(BaseEstimator, TransformerMixin):
             for col in result.columns:
                 if hasattr(result[col], "dtype") and str(result[col].dtype) == "string":
                     result[col] = result[col].astype(object).replace({pd.NA: np.nan})
-            return result.values
+            return np.asarray(result.values)
         return np.asarray(X)
 
 

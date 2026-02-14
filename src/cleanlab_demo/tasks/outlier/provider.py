@@ -22,4 +22,3 @@ class OutlierDetectionDataProvider(ABC):
     @abstractmethod
     def load(self, seed: int, **kwargs: Any) -> pd.DataFrame:
         """Return a DataFrame that includes the label column."""
-

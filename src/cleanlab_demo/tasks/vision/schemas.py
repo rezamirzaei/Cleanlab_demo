@@ -49,4 +49,3 @@ class VisionDetectionSegmentationResult(DemoResult):
     notes: VisionNotes
     object_detection: ObjectDetectionSummary
     segmentation: SegmentationSummary
-

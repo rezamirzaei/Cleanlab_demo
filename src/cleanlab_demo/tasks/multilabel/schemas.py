@@ -53,4 +53,3 @@ class MultilabelClassificationResult(DemoResult):
     noise: MultilabelNoiseSummary
     cleanlab: MultilabelCleanlabSummary
     metrics: MultilabelMetricsByVariant
-

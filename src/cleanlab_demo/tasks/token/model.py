@@ -20,4 +20,3 @@ def build_token_model(seed: int, *, max_iter: int = 800) -> Pipeline:
             ),
         ]
     )
-

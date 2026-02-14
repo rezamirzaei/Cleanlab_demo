@@ -117,7 +117,9 @@ class VisionDetectionSegmentationTask:
             if out_masks is None:
                 p_target = np.zeros((img_h, img_w), dtype=float)
             else:
-                keep = (out_labels == target_class_id) & (out_scores >= float(config.score_threshold))
+                keep = (out_labels == target_class_id) & (
+                    out_scores >= float(config.score_threshold)
+                )
                 m = out_masks[keep].cpu().numpy()
                 if len(m) == 0:
                     p_target = np.zeros((img_h, img_w), dtype=float)
@@ -135,7 +137,9 @@ class VisionDetectionSegmentationTask:
             labels_arr[i, :h, :w] = m
             pred_probs_arr[i, :, :h, :w] = probs
 
-        seg_scores, _ = seg_quality_scores(labels_arr, pred_probs_arr, method="softmin", verbose=False)
+        seg_scores, _ = seg_quality_scores(
+            labels_arr, pred_probs_arr, method="softmin", verbose=False
+        )
         seg_scores = np.asarray(seg_scores, dtype=float)
 
         k = max(1, len(corrupt_seg_set))
@@ -176,4 +180,3 @@ def run_vision_detection_segmentation(
 ) -> VisionDetectionSegmentationResult:
     cfg = config or VisionDetectionSegmentationConfig(**kwargs)
     return VisionDetectionSegmentationTask(data_provider).run(cfg)
-

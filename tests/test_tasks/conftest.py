@@ -7,7 +7,6 @@ Cleanlab demo tasks with synthetic data.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
@@ -258,4 +257,3 @@ def mock_multilabel_provider() -> MockMultilabelProvider:
 def mock_regression_provider() -> MockRegressionProvider:
     """Fixture providing a mock regression data provider."""
     return MockRegressionProvider(n_samples=300)
-

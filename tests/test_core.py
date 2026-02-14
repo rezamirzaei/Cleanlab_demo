@@ -88,8 +88,8 @@ class TestConstants:
         """Test that constants have Final type hints."""
         from cleanlab_demo.core import constants
 
-        # Check that module uses Final annotations
-        annotations = getattr(constants, "__annotations__", {})
+        # Check that module has annotations for constants.
+        assert getattr(constants, "__annotations__", {})
         # Constants should exist and have proper values
         assert hasattr(constants, "DEFAULT_SEED")
 
@@ -127,4 +127,3 @@ class TestTypes:
 
         # Should not raise
         assert hasattr(DataProvider, "__protocol_attrs__") or True  # Protocol check
-

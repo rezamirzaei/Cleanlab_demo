@@ -39,7 +39,7 @@ def version_callback(value: bool) -> None:
     """Print version and exit."""
     if value:
         console.print(f"cleanlab-demo version {__version__}")
-        raise typer.Exit()
+        raise typer.Exit
 
 
 @app.callback()

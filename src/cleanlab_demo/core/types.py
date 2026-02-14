@@ -34,11 +34,11 @@ DataFrameLike = "pd.DataFrame"
 """Pandas DataFrame type alias."""
 
 # Generic type variables
-TConfig = TypeVar("TConfig", bound="BaseConfig")
-"""Type variable for configuration classes."""
+TConfig_contra = TypeVar("TConfig_contra", bound="BaseConfig", contravariant=True)
+"""Contravariant type variable for configuration classes."""
 
-TResult = TypeVar("TResult", bound="BaseResult")
-"""Type variable for result classes."""
+TResult_co = TypeVar("TResult_co", bound="BaseResult", covariant=True)
+"""Covariant type variable for result classes."""
 
 TData = TypeVar("TData")
 """Type variable for generic data types."""
@@ -76,7 +76,7 @@ class BaseResult(Protocol):
 
 
 @runtime_checkable
-class DataProvider(Protocol[TConfig]):
+class DataProvider(Protocol):
     """
     Protocol for data providers.
 
@@ -105,7 +105,7 @@ class DataProvider(Protocol[TConfig]):
 
 
 @runtime_checkable
-class Task(Protocol[TConfig, TResult]):
+class Task(Protocol[TConfig_contra, TResult_co]):
     """
     Protocol for task implementations.
 
@@ -114,7 +114,7 @@ class Task(Protocol[TConfig, TResult]):
     structured results.
     """
 
-    def run(self, config: TConfig) -> TResult:
+    def run(self, config: TConfig_contra) -> TResult_co:
         """
         Execute the task.
 
@@ -135,9 +135,7 @@ class Evaluator(Protocol):
     Evaluators compute metrics for model predictions.
     """
 
-    def evaluate(
-        self, y_true: ArrayLike, y_pred: ArrayLike, **kwargs: Any
-    ) -> dict[str, float]:
+    def evaluate(self, y_true: ArrayLike, y_pred: ArrayLike, **kwargs: Any) -> dict[str, float]:
         """
         Compute evaluation metrics.
 
@@ -160,9 +158,7 @@ class NoiseInjector(Protocol):
     Noise injectors add synthetic label noise for evaluation purposes.
     """
 
-    def inject(
-        self, labels: ArrayLike, *, frac: float, seed: int
-    ) -> tuple[ArrayLike, ArrayLike]:
+    def inject(self, labels: ArrayLike, *, frac: float, seed: int) -> tuple[ArrayLike, ArrayLike]:
         """
         Inject noise into labels.
 
@@ -198,4 +194,3 @@ class MetricsDict(dict[str, float]):
     def to_percentage(self) -> MetricsDict:
         """Convert all values to percentages (multiply by 100)."""
         return MetricsDict({k: v * 100 for k, v in self.items()})
-

@@ -14,4 +14,3 @@ class TokenClassificationDataProvider(ABC):
         self, seed: int, max_train: int, max_dev: int, **kwargs: Any
     ) -> tuple[list[list[str]], list[list[str]], list[list[str]], list[list[str]]]:
         """Return train_tokens, train_tags, dev_tokens, dev_tags."""
-

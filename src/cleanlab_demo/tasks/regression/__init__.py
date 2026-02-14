@@ -16,4 +16,3 @@ __all__ = [
     "RegressionDataProvider",
     "run_regression_cleanlearning",
 ]
-

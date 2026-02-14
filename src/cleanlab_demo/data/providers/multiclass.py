@@ -63,12 +63,12 @@ class SKLearnDatasetProvider(MulticlassDataProvider):
             df = df.sample(n=max_rows, random_state=seed).reset_index(drop=True)
 
         # Separate features and target
-        target_col = bunch.target_names if hasattr(bunch, 'target_names') else df.columns[-1]
+        target_col = bunch.target_names if hasattr(bunch, "target_names") else df.columns[-1]
         if isinstance(target_col, list):
             target_col = target_col[0] if len(target_col) == 1 else df.columns[-1]
 
         # For datasets like covtype, the target is in a specific column
-        if hasattr(bunch, 'target') and isinstance(bunch.target, pd.Series):
+        if hasattr(bunch, "target") and isinstance(bunch.target, pd.Series):
             target_col = bunch.target.name or df.columns[-1]
 
         X = df.drop(columns=[target_col] if target_col in df.columns else [df.columns[-1]])
@@ -87,6 +87,7 @@ class CovtypeDataProvider(SKLearnDatasetProvider):
 
     def __init__(self, max_rows: int = 20_000) -> None:
         from sklearn.datasets import fetch_covtype
+
         super().__init__(
             name="sklearn.fetch_covtype",
             fetch_func=fetch_covtype,

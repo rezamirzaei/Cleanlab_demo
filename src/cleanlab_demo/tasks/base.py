@@ -417,4 +417,3 @@ class EvaluationMixin:
     def safe_divide(numerator: float, denominator: float, default: float = 0.0) -> float:
         """Safely divide, returning default if denominator is zero."""
         return float(numerator / denominator) if denominator > 0 else default
-
